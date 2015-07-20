@@ -1,0 +1,72 @@
+extends ../layouts/default
+block content
+  script(src='/socket.io/socket.io.js')
+  script.
+      //- var socket = io.connect('http://localhost:3000');
+      var socket = io.connect(window.location.origin);
+      socket.on('news', function (data) {
+        $(".media-list").append(data+"<br>");
+      });
+
+      
+      $( document ).ready(function() {
+        $( "#send_mess" ).bind( "click", function() {
+          socket.emit('news', $('.form-control').val());
+          $('.form-control').val('');
+          return false;
+        });
+      });
+
+
+  .container
+    .row(style='padding-top:40px;')
+      h3.text-center BOOTSTRAP CHAT EXAMPLE 
+      .col-md-8
+        .panel.panel-info
+          .panel-heading
+            | RECENT CHAT HISTORY
+          ul.media-list
+            li.media
+              .media-body
+                .media
+                  a.pull-left(href='#')
+                    //- img.media-object.img-circle(src='assets/img/user.gif')
+                  |                                                 
+                  .media-body
+                    | Donec sit amet ligula enim. Duis vel condimentum massa.
+                    | Donec sit amet ligula enim. Duis vel condimentum massa.Donec sit amet ligula enim. 
+                    | Duis vel condimentum massa.
+                    | Donec sit amet ligula enim. Duis vel condimentum massa.
+                    br
+                    |                                                    
+                    small.text-muted Jhon Rexa | 23rd June at 5:00pm
+                    |                                                     
+                    hr
+          |             
+          .panel-footer
+            //- form(action='chats/send',method='post')
+            form
+              .input-group
+                input.form-control(type='text', placeholder='Enter Message', name='message')
+                |                                     
+                span.input-group-btn
+                  button.btn.btn-info#send_mess(type='button') SEND
+        |     
+      .col-md-4
+        .panel.panel-primary
+          .panel-heading
+            | ONLINE USERS
+          |             
+          .panel-body
+            ul.media-list        
+              li.media
+                .media-body
+                  .media
+                    a.pull-left(href='#')
+                      //- img.media-object.img-circle(style='max-height:40px;', src='assets/img/user.gif')
+                    |                                                 
+                    .media-body
+                      h5 Jhon Rexa | User 
+                      |                                                     
+                      |                                                    
+                      small.text-muted Active From 3 hours
